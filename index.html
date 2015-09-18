@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <script data-require="jquery@1.11.0" data-semver="1.11.0" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.17"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js"></script>
+    <script src="gmap-locator-wrapper.js"></script>
+    <script>
+      function initializeLocator() {
+        var options = {
+          address: "", //start address search string
+          latitude: null, //alternatively provide lat e lng for reverse geocoding
+          longitude: null,
+          //styling: via classes:
+          classes: {
+            div_wrapper: "", 
+            command_panel: "", 
+            address_text: "", 
+            address_button: "", 
+            select_button: "", 
+            map_div :""
+          },
+          //or via inline styles:
+          styles: {
+            div_wrapper: {"min-height": "500px", margin: 0, padding: 0}, 
+            command_panel: {
+              "position": "relative", 
+              //"top": "5px", 
+              //"left": "50%",
+              "border-radius":"2px 0 0 2px",
+              "box-sizing": "border-box",
+              "-moz-box-sizing": "border-box",
+              "outline": "none",
+              "box-shadow": "0 2px 6px rgba(0, 0, 0, 0.3)",
+              
+              "z-index": 5, 
+              "background-color": "#fff", 
+              "padding": "1px 1px 1px 10px", 
+              "border": "1px solid #999", 
+              //"height": "32px", 
+              "font-family": "'Roboto','sans-serif'", 
+              "line-height": "30px"
+            }, 
+            address_text: {"font-size": "15px",
+              "padding": "0 11px 0 13px",
+              "text-overflow": "ellipsis",
+              "margin-left": "12px",
+              "width": "40%"
+            }, 
+            address_button:{"font-size": "15px"}, 
+            select_button:{"font-size": "15px"}, 
+            map_div :""
+          },
+		  script: {
+			params: {  
+				key: "",    //your google api key
+				china: false,
+				v: '3.17',
+				libraries: '',
+				language: 'en',
+				sensor: 'false'
+			}
+		  },
+          map:{zoom: 18}
+        };
+        // init the object :
+        // param1: css selector to an existing element: the map will be appended inside the element
+        // param2: config options 
+        var maplocator = new GMapLocatorWrapper("#panel-map-container", options);
+        // use .load() and .unload() to show and hide the map
+        $("#open-map").click(function(){
+          if(maplocator.isLoaded()){
+            maplocator.unload();
+          }else{
+            maplocator.load();
+          }
+        });
+        // map locator triggers 2 gmap events: 
+        //  1.   'markerplaced' every time an address is selected and a marker shown
+        google.maps.event.addListener(maplocator, 'markerplaced', function(e, marker) {
+          console.log(e);
+          console.log(marker);
+          
+        });
+        //  1.   'location_selected' when the user chooses the 'use selected location' button
+        google.maps.event.addListener(maplocator, 'location_selected', function(e, marker) {
+          
+          alert(marker.position);
+			$('#latitude').val(marker.position.lat());
+			$('#longitude').val(marker.position.lng());
+          maplocator.unload();
+        });
+		//alternatively:
+		
+		
+//		maplocator.load().then(function (locator, gmap) {
+//			google.maps.event.addListener(maplocator, 'location_selected', function (e, marker) {
+//				if (marker) {
+//					$('#latitude').val(marker.position.lat());
+//					$('#longitude').val(marker.position.lng());
+//				}
+				//locator.unload();
+
+				
+//			});
+
+////		});
+      }
+      google.maps.event.addDomListener(window, 'load', initializeLocator);    
+    </script>
+  </head>
+
+  <body>
+    <input type="button" id="open-map" value="open map" />
+    <div id="panel-map-container">
+      
+    </div>
+
+	lat: <input type="text" id="latitude" value="" />
+	long: <input type="text" id="longitude" value="" />
+  </body>
+
+</html>
