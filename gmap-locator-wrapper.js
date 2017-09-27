@@ -140,7 +140,7 @@
 
 
 */
-
+var __GMapApiKey__ = "";
 
 
 /** @class */
@@ -189,7 +189,7 @@ var GMapLocatorWrapper = function(containerSelector, opts){
     },
     script: {
       params: {  
-        key: __PreamoGMapApiKey__,    
+        key: "",    
         china: false,
         v: '3.17',
         libraries: '',
@@ -248,7 +248,7 @@ var GMapLocatorWrapper = function(containerSelector, opts){
     },
     script: {
       params: {  
-        key: __PreamoGMapApiKey__,    
+        key: __GMapApiKey__,//########, your gmap api key   
         china: false,
         v: '3.17',
         libraries: '',
