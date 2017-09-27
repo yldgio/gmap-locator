@@ -126,3 +126,10 @@
 </html>
 
 ```
+
+
+
+### Deps: ###
+- [jQuery v1.11.2 ~>](http://jquery.org/)
+- [Google Api v 3.17 ~>](https://maps.googleapis.com/maps/api/js?v=3.17)
+- [lodash 3.10.0](http://lodash.com)
